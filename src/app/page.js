@@ -4,12 +4,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChannels } from "@/features/channel/channel.slice";
 import { db } from "@/firebase/config";
 import { collection, onSnapshot, query } from "firebase/firestore";
+import CategoryTabs from "@/components/ui/CategoryTabs";
 
 export default function Home() {
   const dispatch = useDispatch();
   const { filteredList } = useSelector((state) => state.channel);
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const categories = [
+    "All",
+    "News",
+    "Entertainment",
+    "Sports",
+    "Movie",
+    "Music",
+    "Kids",
+    "Educational",
+    "Religious",
+    "Documentary",
+    "Lifestyle",
+    "Cooking/Food",
+    "Travel",
+    "Business",
+    "Cartoon",
+    "Regional",
+  ];
 
   useEffect(() => {
     setIsClient(true);
@@ -27,25 +48,38 @@ export default function Home() {
   const displayList = filteredList?.length > 0 ? filteredList : [];
 
   return (
-    /* পরিবর্তন ১: ব্যাকগ্রাউন্ড সাদা এবং টেক্সট কালো করা হয়েছে */
     <div className="w-full min-h-screen bg-white text-gray-900">
-      {/* ১. ভিডিও প্লেয়ার সেকশন */}
-      {isClient && selectedUrl && (
-        <div className="w-full bg-black aspect-video max-h-[500px] flex items-center justify-center border-b-4 border-red-600 shadow-2xl">
-          <video
-            key={selectedUrl}
-            src={selectedUrl}
-            controls
-            autoPlay
-            className="h-full w-auto"
-            onError={() => alert("ভিডিও লিঙ্কটি কাজ করছে না।")}
+      {/* ১. স্টিকি ক্যাটাগরি বার - গ্লাস ইফেক্ট */}
+      {/* ক্যাটাগরি বার উপরে উঠানোর জন্য py-2 থেকে কমিয়ে py-0 করা হয়েছে */}
+      <div className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md w-full border-b border-transparent transition-all duration-300">
+        <div className="px-4 md:px-6 py-0">
+          <CategoryTabs
+            categories={categories}
+            active={activeCategory}
+            onChange={setActiveCategory}
           />
         </div>
-      )}
+      </div>
 
-      <div className="p-4 md:p-10">
-        {/* ২. ব্যানার লেআউট: ডার্ক কালার সরিয়ে হালকা ধূসর (bg-gray-50) করা হয়েছে */}
-        <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-10 md:p-20 mb-14 shadow-sm relative overflow-hidden">
+      <div className="px-4 md:px-10">
+        {/* ২. ভিডিও প্লেয়ার */}
+        {/* এখানে mt-4 থেকে কমিয়ে mt-1 করা হয়েছে যেন এটি ক্যাটাগরি বারের ঠিক নিচ থেকে শুরু হয় */}
+        {isClient && selectedUrl && (
+          <div className="w-full bg-black aspect-video max-h-[500px] flex items-center justify-center border-b-4 border-red-600 shadow-2xl mt-1 mb-10 rounded-2xl overflow-hidden">
+            <video
+              key={selectedUrl}
+              src={selectedUrl}
+              controls
+              autoPlay
+              className="h-full w-auto"
+              onError={() => alert("ভিডিও লিঙ্কটি কাজ করছে না।")}
+            />
+          </div>
+        )}
+
+        {/* ৩. ব্যানার লেআউট (আপনার দেওয়া ডিজাইন অনুযায়ী) */}
+        {/* mt-6 থেকে কমিয়ে mt-1 করা হয়েছে ক্যাটাগরি বারের কাছাকাছি নেওয়ার জন্য */}
+        <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-10 md:p-20 mb-14 mt-1 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
@@ -53,7 +87,7 @@ export default function Home() {
                 সরাসরি সম্প্রচার
               </span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black mb-6 text-gray-900">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 text-gray-900 leading-tight">
               বাংলাদেশের সেরা <br />{" "}
               <span className="text-red-600">লাইভ টিভি</span>
             </h1>
@@ -63,20 +97,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ৩. সব চ্যানেল টাইটেল */}
+        {/* ৪. সব চ্যানেল টাইটেল */}
         <div className="flex items-center gap-3 mb-10 px-2 border-l-4 border-red-600 ml-1">
           <h2 className="text-2xl font-black tracking-tight ml-2 text-gray-900">
             সব চ্যানেল
           </h2>
         </div>
 
-        {/* ৪. টিভি কার্ড ডিজাইন */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        {/* ৫. টিভি কার্ড ডিজাইন - হুবহু আপনার দেওয়া ডিজাইন */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 pb-20">
           {displayList.map((ch, i) => (
             <div
               key={i}
               onClick={() => setSelectedUrl(ch.url)}
-              /* পরিবর্তন ৩: কার্ডের শ্যাডো এবং বর্ডার সাদা ব্যাকগ্রাউন্ডের জন্য অপ্টিমাইজ করা হয়েছে */
               className="group cursor-pointer bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
             >
               {/* কার্ডের উপরের অংশ */}
