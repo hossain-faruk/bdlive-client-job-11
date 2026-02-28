@@ -1,11 +1,9 @@
-// components/layout/Header.jsx
 "use client";
 import { useState, useEffect } from "react";
 
 export default function Header({ toggleSidebar, isOpen }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // স্ক্রোল ডিটেক্ট করার জন্য ইফেক্ট
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -21,9 +19,10 @@ export default function Header({ toggleSidebar, isOpen }) {
 
   return (
     <header
-      className={`h-[56px] flex items-center justify-between px-4 bg-white w-full sticky top-0 z-[120] transition-shadow duration-200 ${
-        isScrolled ? "shadow-md border-transparent" : "border-b border-gray-100"
-      }`}
+      className={`h-[56px] flex items-center justify-between px-4 bg-white w-full sticky top-0 z-[120] transition-all duration-200 ${
+        /* বর্ডার এবং শ্যাডো সম্পূর্ণ রিমুভ করা হয়েছে */
+        isScrolled ? "bg-white/95 backdrop-blur-sm" : "bg-white"
+      } border-none shadow-none`}
     >
       {/* বাম অংশ: মেনু ও লোগো */}
       <div className="flex items-center shrink-0">
@@ -81,7 +80,6 @@ export default function Header({ toggleSidebar, isOpen }) {
           </button>
         </div>
 
-        {/* মোবাইল সার্চ আইকন */}
         <button className="sm:hidden p-2 hover:bg-gray-100 rounded-full ml-auto">
           <svg
             className="w-6 h-6 text-[#0f0f0f]"
@@ -101,7 +99,6 @@ export default function Header({ toggleSidebar, isOpen }) {
 
       {/* ডান অংশ: লাইভ এবং সাইন ইন বাটন */}
       <div className="flex items-center gap-2 sm:gap-4 shrink-0 pr-2 sm:pr-6 md:pr-10">
-        {/* লাইভ বাটন */}
         <button className="bg-gray-100 hover:bg-red-50 text-red-600 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold uppercase flex items-center gap-2 border border-gray-200 hover:border-red-200 transition-all duration-200 active:scale-95">
           <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -110,7 +107,6 @@ export default function Header({ toggleSidebar, isOpen }) {
           <span className="tracking-wide whitespace-nowrap">Live</span>
         </button>
 
-        {/* সাইন ইন বাটন */}
         <button className="bg-gray-100 hover:bg-blue-50 text-blue-600 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold uppercase border border-gray-200 hover:border-blue-200 transition-all duration-200 active:scale-95 whitespace-nowrap">
           Sign in
         </button>

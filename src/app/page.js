@@ -50,8 +50,7 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen bg-white text-gray-900">
       {/* ১. স্টিকি ক্যাটাগরি বার - গ্লাস ইফেক্ট */}
-      {/* ক্যাটাগরি বার উপরে উঠানোর জন্য py-2 থেকে কমিয়ে py-0 করা হয়েছে */}
-      <div className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md w-full border-b border-transparent transition-all duration-300">
+      <div className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md w-full border-b-0 border-transparent transition-all duration-300">
         <div className="px-4 md:px-6 py-0">
           <CategoryTabs
             categories={categories}
@@ -63,9 +62,8 @@ export default function Home() {
 
       <div className="px-4 md:px-10">
         {/* ২. ভিডিও প্লেয়ার */}
-        {/* এখানে mt-4 থেকে কমিয়ে mt-1 করা হয়েছে যেন এটি ক্যাটাগরি বারের ঠিক নিচ থেকে শুরু হয় */}
         {isClient && selectedUrl && (
-          <div className="w-full bg-black aspect-video max-h-[500px] flex items-center justify-center border-b-4 border-red-600 shadow-2xl mt-1 mb-10 rounded-2xl overflow-hidden">
+          <div className="w-full bg-black aspect-video max-h-[500px] flex items-center justify-center border-b-4 border-red-600 shadow-2xl mt-4 mb-10 rounded-2xl overflow-hidden">
             <video
               key={selectedUrl}
               src={selectedUrl}
@@ -77,34 +75,70 @@ export default function Home() {
           </div>
         )}
 
-        {/* ৩. ব্যানার লেআউট (আপনার দেওয়া ডিজাইন অনুযায়ী) */}
-        {/* mt-6 থেকে কমিয়ে mt-1 করা হয়েছে ক্যাটাগরি বারের কাছাকাছি নেওয়ার জন্য */}
-        <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-10 md:p-20 mb-14 mt-1 shadow-sm relative overflow-hidden">
+        {/* ৩. ব্যানার লেআউট (আপনার দেওয়া ডিজাইন অনুযায়ী) */}
+        {/* এখানে mt-1 থেকে বাড়িয়ে mt-6 করা হয়েছে যাতে ক্যাটাগরি বারের সাথে সুন্দর একটি গ্যাপ তৈরি হয় */}
+        <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-10 md:p-20 mb-14 mt-6 shadow-sm relative overflow-hidden">
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
-              <span className="text-red-600 text-[10px] font-black uppercase tracking-widest">
-                সরাসরি সম্প্রচার
+              <span className="text-red-600 text-[20px] font-black uppercase tracking-widest">
+                Live Broadcast
               </span>
             </div>
             <h1 className="text-5xl md:text-7xl font-black mb-6 text-gray-900 leading-tight">
-              বাংলাদেশের সেরা <br />{" "}
-              <span className="text-red-600">লাইভ টিভি</span>
+              The best of Bangladesh <br />{" "}
+              <span className="text-red-600">Live TV</span>
             </h1>
             <p className="text-gray-500 max-w-lg text-lg font-medium leading-relaxed">
-              सबसे দ্রুত এবং ফ্রিতে সরাসরি টিভি দেখুন।
+              Watch live TV the fastest and for free
             </p>
           </div>
         </div>
 
         {/* ৪. সব চ্যানেল টাইটেল */}
-        <div className="flex items-center gap-3 mb-10 px-2 border-l-4 border-red-600 ml-1">
-          <h2 className="text-2xl font-black tracking-tight ml-2 text-gray-900">
-            সব চ্যানেল
-          </h2>
+        <div className="flex items-center bg-red-600 mb-5 -mt-6 overflow-hidden rounded-lg shadow-sm border-l-[4px] border-red-800 h-8 md:h-9 w-full">
+          {/* ১. LIVE বাটন - স্লিম এবং টাইট প্যাডিং */}
+          <div className="flex items-center px-3 shrink-0 h-full bg-red-700/40 border-r border-red-400/20">
+            <div className="flex items-center gap-1.5 bg-white text-red-600 text-[8px] font-black px-2 py-0.5 rounded shadow-sm">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-600"></span>
+              </span>
+              LIVE
+            </div>
+          </div>
+
+          {/* ২. নিউজ মারকিউ - এখন ফুল উইথ জুড়ে কাজ করবে */}
+          <div className="flex-1 flex items-center overflow-hidden h-full">
+            <span className="text-white/90 font-black text-[9px] md:text-[10px] pl-3 pr-2 shrink-0 uppercase tracking-tight">
+              BREAKING NEWS:
+            </span>
+            <marquee
+              className="text-xs font-bold text-white flex items-center"
+              scrollamount="5"
+            >
+              <span className="mx-4 ">
+                🔴 All popular Bangladeshi TV channels are now in one place
+                Explosions were heard in Tehran on Saturday, Iranian media
+                reported. Hour of your freedom is at hand, Trump tells
+                Iranians.....
+              </span>
+              <span className="mx-4">
+                🔴 Update: Watch live TV without buffering on high-speed servers
+                Explosions were heard in Tehran on Saturday, Iranian media
+                reported. Hour of your freedom is at hand, Trump tells
+                Iranians........
+              </span>
+              <span className="mx-4 ">
+                🔴 Stay tuned with us for more updates Explosions were heard in
+                Tehran on Saturday, Iranian media reported.Hour of your freedom
+                is at hand, Trump tells Iranians........
+              </span>
+            </marquee>
+          </div>
         </div>
 
-        {/* ৫. টিভি কার্ড ডিজাইন - হুবহু আপনার দেওয়া ডিজাইন */}
+        {/* ৫. টিভি কার্ড ডিজাইন - হুবহু আপনার দেওয়া ডিজাইন */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 pb-20">
           {displayList.map((ch, i) => (
             <div
